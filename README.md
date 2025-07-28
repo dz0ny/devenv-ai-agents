@@ -1,6 +1,6 @@
-# devenv-claude-agents
+# devenv-ai-agents
 
-A collection of specialized Claude code agents using https://devenv.sh
+A collection of specialized AI agents using https://devenv.sh
 
 
 ## Available Agents
