@@ -18,11 +18,11 @@ To use these Claude code agents in your devenv.sh project, import this repositor
 
 ```yaml title="devenv.yaml"
 inputs:
-  claude-agents:
-    url: github:cachix/devenv-claude-agents
+  devenv-ai-agents:
+    url: github:cachix/devenv-ai-agents
     flake: false
 imports:
-  - claude-agents
+  - devenv-ai-agents
 ```
 
 ## Extending agents
