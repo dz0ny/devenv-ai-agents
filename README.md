@@ -1,6 +1,6 @@
 # devenv-ai-agents
 
-A collection of specialized AI agents using https://devenv.sh
+A collection of specialized AI agents like [Claude Code Subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents) using https://devenv.sh
 
 
 ## Available Agents
