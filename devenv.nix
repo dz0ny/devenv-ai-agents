@@ -1,4 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
 
 {
   # https://devenv.sh/integrations/claude-code/
@@ -8,7 +14,16 @@
     nix-specialist = {
       description = "Expert nix and nixos review specialist that checks for quality and best practices.";
       proactive = true;
-      tools = [ "Read" "Write" "Edit" "MultiEdit" "Grep" "Glob" "Bash" "WebSearch" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "MultiEdit"
+        "Grep"
+        "Glob"
+        "Bash"
+        "WebSearch"
+      ];
       prompt = ''
         You are a specialized code analysis agent focused on identifying and fixing Nix anti-patterns. You focus on .nix files.
 
@@ -108,12 +123,21 @@
         Ready to help you write better Nix code! Share your Nix files, configurations, or specific questions about anti-patterns.
       '';
     };
-    
+
     # devenv Development Expert Agent
     agents.devenv-expert = {
       description = "Expert in devenv configuration, Nix development environments, and best practices";
       proactive = true;
-      tools = [ "Read" "Write" "Edit" "MultiEdit" "Grep" "Glob" "Bash" "TodoWrite" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "MultiEdit"
+        "Grep"
+        "Glob"
+        "Bash"
+        "TodoWrite"
+      ];
       prompt = ''
         You are a devenv expert specializing in declarative developer environments using Nix. Your expertise includes:
 
@@ -165,7 +189,13 @@
     agents.devenv-language-specialist = {
       description = "Specialist in configuring specific programming languages within devenv";
       proactive = false;
-      tools = [ "Read" "Write" "Edit" "Grep" "Bash" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "Grep"
+        "Bash"
+      ];
       prompt = ''
         You specialize in configuring programming languages within devenv environments. Your focus areas:
 
@@ -214,11 +244,16 @@
       '';
     };
 
-    # Service & Infrastructure Agent  
+    # Service & Infrastructure Agent
     agents.devenv-service-configurator = {
       description = "Expert in configuring databases, message queues, and infrastructure services";
       proactive = false;
-      tools = [ "Read" "Write" "Edit" "Bash" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "Bash"
+      ];
       prompt = ''
         You specialize in configuring infrastructure services within devenv. Your expertise covers:
 
@@ -267,7 +302,12 @@
     agents.devenv-process-orchestrator = {
       description = "Specialist in configuring processes, tasks, and development workflows";
       proactive = false;
-      tools = [ "Read" "Write" "Edit" "Bash" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "Bash"
+      ];
       prompt = ''
         You specialize in orchestrating development processes and tasks within devenv. Your focus:
 
@@ -370,7 +410,7 @@
         process.implementation = "process-compose"; # default
         # process.implementation = "overmind";
         # process.implementation = "hivemind";
-        
+
         # Custom process-compose configuration
         process.process-compose = {
           port = 8080; # TUI port
@@ -393,11 +433,11 @@
 
         # Custom scripts
         scripts.deploy = {
-          exec = ''
+          exec = '''
             echo "Deploying application..."
             cargo build --release
             docker build -t myapp .
-          '';
+          ''';
           description = "Build and deploy the application";
         };
         ```
@@ -410,7 +450,12 @@
     agents.devenv-deployment-specialist = {
       description = "Expert in container generation, CI/CD integration, and deployment configurations";
       proactive = false;
-      tools = [ "Read" "Write" "Edit" "Bash" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "Bash"
+      ];
       prompt = ''
         You specialize in deployment and containerization aspects of devenv. Your expertise:
 
@@ -467,7 +512,12 @@
     agents.devenv-troubleshooter = {
       description = "Specialist in debugging devenv configuration issues and performance problems";
       proactive = true;
-      tools = [ "Read" "Grep" "Bash" "TodoWrite" ];
+      tools = [
+        "Read"
+        "Grep"
+        "Bash"
+        "TodoWrite"
+      ];
       prompt = ''
         You specialize in troubleshooting devenv configuration issues. Your diagnostic expertise:
 
@@ -528,7 +578,12 @@
     agents.devenv-git-hooks-specialist = {
       description = "Expert in configuring git hooks, pre-commit checks, and code quality tools";
       proactive = false;
-      tools = [ "Read" "Write" "Edit" "Bash" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "Bash"
+      ];
       prompt = ''
         You specialize in configuring git hooks and code quality tools within devenv. Your focus:
 
@@ -595,7 +650,14 @@
     agents.devenv-language-guru = {
       description = "Comprehensive expert in all 50+ programming languages supported by devenv";
       proactive = false;
-      tools = [ "Read" "Write" "Edit" "MultiEdit" "Grep" "Bash" ];
+      tools = [
+        "Read"
+        "Write"
+        "Edit"
+        "MultiEdit"
+        "Grep"
+        "Bash"
+      ];
       prompt = ''
         You are a comprehensive language expert for all programming languages supported by devenv. Your expertise covers:
 
@@ -1171,7 +1233,7 @@
         command = ''
           json=$(cat)
           file_path=$(echo "$json" | jq -r '.file_path // empty')
-          
+
           if [[ "$file_path" =~ \.(nix)$ ]]; then
             if command -v nixpkgs-fmt >/dev/null 2>&1; then
               nixpkgs-fmt "$file_path"
@@ -1189,7 +1251,7 @@
         command = ''
           json=$(cat)
           file_path=$(echo "$json" | jq -r '.file_path // empty')
-          
+
           if [[ "$file_path" == "devenv.nix" || "$file_path" == "devenv.yaml" ]]; then
             echo "Validating devenv configuration..."
             if ! devenv shell --command "echo 'Configuration valid'"; then
@@ -1215,5 +1277,5 @@
       };
     };
   };
-  # See full reference at https://devenv.sh/reference/options/
+
 }
