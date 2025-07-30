@@ -9,7 +9,110 @@
 {
   # https://devenv.sh/integrations/claude-code/
   claude.code.enable = true;
+  claude.code.commands = {
+    init-project = ''
+      Initialize a new devenv project with best practices
 
+      ```bash
+      devenv init
+      echo ".devenv" >> .gitignore
+      ```
+    '';
+
+    test-config = ''
+      Test the current devenv configuration
+
+      ```bash
+      devenv test
+      ```
+    '';
+
+    build-container = ''
+      Build a container from the current devenv
+
+      ```bash
+      devenv container build shell
+      ```
+    '';
+
+    update-inputs = ''
+      Update all inputs in devenv.yaml
+
+      ```bash
+      devenv update
+      ```
+    '';
+
+    clean-cache = ''
+      Clean the devenv evaluation cache
+
+      ```bash
+      devenv shell --refresh-eval-cache
+      ```
+    '';
+
+    debug-build = ''
+      Debug build issues with verbose output
+
+      ```bash
+      devenv --verbose shell
+      ```
+    '';
+  };
+
+  # Hooks for automatic devenv workflow
+  claude.code.hooks = {
+    format-nix = {
+      enable = true;
+      name = "Format Nix files";
+      hookType = "PostToolUse";
+      matcher = "^(Edit|MultiEdit|Write)$";
+      command = ''
+        json=$(cat)
+        file_path=$(echo "$json" | jq -r '.file_path // empty')
+
+        if [[ "$file_path" =~ \.(nix)$ ]]; then
+          if command -v nixpkgs-fmt >/dev/null 2>&1; then
+            nixpkgs-fmt "$file_path"
+            echo "Formatted Nix file: $file_path"
+          fi
+        fi
+      '';
+    };
+
+    validate-devenv = {
+      enable = true;
+      name = "Validate devenv configuration";
+      hookType = "PostToolUse";
+      matcher = "^(Edit|MultiEdit|Write)$";
+      command = ''
+        json=$(cat)
+        file_path=$(echo "$json" | jq -r '.file_path // empty')
+
+        if [[ "$file_path" == "devenv.nix" || "$file_path" == "devenv.yaml" ]]; then
+          echo "Validating devenv configuration..."
+          if ! devenv shell --command "echo 'Configuration valid'"; then
+            echo "⚠️  devenv configuration validation failed"
+            exit 1
+          fi
+          echo "✅ devenv configuration is valid"
+        fi
+      '';
+    };
+
+    suggest-improvements = {
+      enable = true;
+      name = "Suggest devenv improvements";
+      hookType = "Stop";
+      command = ''
+        if [[ -f "devenv.nix" ]]; then
+          echo "💡 Consider running 'devenv test' to validate your configuration"
+          echo "💡 Use 'devenv update' to keep inputs current"
+          echo "💡 Check 'devenv info' for environment details"
+        fi
+      '';
+    };
+  };
   claude.code.agents = {
     nix-specialist = {
       description = "Expert nix and nixos review specialist that checks for quality and best practices.";
@@ -1171,111 +1274,6 @@
       '';
     };
 
-    # Commands for common devenv tasks
-    commands = {
-      init-project = ''
-        Initialize a new devenv project with best practices
-
-        ```bash
-        devenv init
-        echo ".devenv" >> .gitignore
-        ```
-      '';
-
-      test-config = ''
-        Test the current devenv configuration
-
-        ```bash
-        devenv test
-        ```
-      '';
-
-      build-container = ''
-        Build a container from the current devenv
-
-        ```bash
-        devenv container build shell
-        ```
-      '';
-
-      update-inputs = ''
-        Update all inputs in devenv.yaml
-
-        ```bash
-        devenv update
-        ```
-      '';
-
-      clean-cache = ''
-        Clean the devenv evaluation cache
-
-        ```bash
-        devenv shell --refresh-eval-cache
-        ```
-      '';
-
-      debug-build = ''
-        Debug build issues with verbose output
-
-        ```bash
-        devenv --verbose shell
-        ```
-      '';
-    };
-
-    # Hooks for automatic devenv workflow
-    hooks = {
-      format-nix = {
-        enable = true;
-        name = "Format Nix files";
-        hookType = "PostToolUse";
-        matcher = "^(Edit|MultiEdit|Write)$";
-        command = ''
-          json=$(cat)
-          file_path=$(echo "$json" | jq -r '.file_path // empty')
-
-          if [[ "$file_path" =~ \.(nix)$ ]]; then
-            if command -v nixpkgs-fmt >/dev/null 2>&1; then
-              nixpkgs-fmt "$file_path"
-              echo "Formatted Nix file: $file_path"
-            fi
-          fi
-        '';
-      };
-
-      validate-devenv = {
-        enable = true;
-        name = "Validate devenv configuration";
-        hookType = "PostToolUse";
-        matcher = "^(Edit|MultiEdit|Write)$";
-        command = ''
-          json=$(cat)
-          file_path=$(echo "$json" | jq -r '.file_path // empty')
-
-          if [[ "$file_path" == "devenv.nix" || "$file_path" == "devenv.yaml" ]]; then
-            echo "Validating devenv configuration..."
-            if ! devenv shell --command "echo 'Configuration valid'"; then
-              echo "⚠️  devenv configuration validation failed"
-              exit 1
-            fi
-            echo "✅ devenv configuration is valid"
-          fi
-        '';
-      };
-
-      suggest-improvements = {
-        enable = true;
-        name = "Suggest devenv improvements";
-        hookType = "Stop";
-        command = ''
-          if [[ -f "devenv.nix" ]]; then
-            echo "💡 Consider running 'devenv test' to validate your configuration"
-            echo "💡 Use 'devenv update' to keep inputs current"
-            echo "💡 Check 'devenv info' for environment details"
-          fi
-        '';
-      };
-    };
   };
 
 }
