@@ -125,7 +125,7 @@
     };
 
     # devenv Development Expert Agent
-    agents.devenv-expert = {
+    devenv-expert = {
       description = "Expert in devenv configuration, Nix development environments, and best practices";
       proactive = true;
       tools = [
@@ -186,7 +186,7 @@
     };
 
     # Language-Specific Configuration Agent
-    agents.devenv-language-specialist = {
+    devenv-language-specialist = {
       description = "Specialist in configuring specific programming languages within devenv";
       proactive = false;
       tools = [
@@ -245,7 +245,7 @@
     };
 
     # Service & Infrastructure Agent
-    agents.devenv-service-configurator = {
+    devenv-service-configurator = {
       description = "Expert in configuring databases, message queues, and infrastructure services";
       proactive = false;
       tools = [
@@ -299,7 +299,7 @@
     };
 
     # Process & Task Orchestration Agent
-    agents.devenv-process-orchestrator = {
+    devenv-process-orchestrator = {
       description = "Specialist in configuring processes, tasks, and development workflows";
       proactive = false;
       tools = [
@@ -447,7 +447,7 @@
     };
 
     # Container & Deployment Agent
-    agents.devenv-deployment-specialist = {
+    devenv-deployment-specialist = {
       description = "Expert in container generation, CI/CD integration, and deployment configurations";
       proactive = false;
       tools = [
@@ -509,7 +509,7 @@
     };
 
     # Configuration Troubleshooting Agent
-    agents.devenv-troubleshooter = {
+    devenv-troubleshooter = {
       description = "Specialist in debugging devenv configuration issues and performance problems";
       proactive = true;
       tools = [
@@ -575,7 +575,7 @@
     };
 
     # Git Hooks & Pre-commit Agent
-    agents.devenv-git-hooks-specialist = {
+    devenv-git-hooks-specialist = {
       description = "Expert in configuring git hooks, pre-commit checks, and code quality tools";
       proactive = false;
       tools = [
@@ -647,7 +647,7 @@
     };
 
     # Comprehensive Language Support Agent
-    agents.devenv-language-guru = {
+    devenv-language-guru = {
       description = "Comprehensive expert in all 50+ programming languages supported by devenv";
       proactive = false;
       tools = [
