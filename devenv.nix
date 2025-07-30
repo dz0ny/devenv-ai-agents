@@ -1,17 +1,7 @@
 {
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}:
-
-{
-  # https://devenv.sh/integrations/claude-code/
-  claude.code.enable = true;
-
-  claude.code.agents = {
-    nix-specialist = {
+  claude.code = {
+    enable = true;
+    agents.nix-specialist = {
       description = "Expert nix and nixos review specialist that checks for quality and best practices.";
       proactive = true;
       tools = [
@@ -125,19 +115,10 @@
     };
 
     # devenv Development Expert Agent
-    devenv-expert = {
+    agents.devenv-expert = {
       description = "Expert in devenv configuration, Nix development environments, and best practices";
       proactive = true;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "MultiEdit"
-        "Grep"
-        "Glob"
-        "Bash"
-        "TodoWrite"
-      ];
+      tools = [ "Read" "Write" "Edit" "MultiEdit" "Grep" "Glob" "Bash" "TodoWrite" ];
       prompt = ''
         You are a devenv expert specializing in declarative developer environments using Nix. Your expertise includes:
 
@@ -186,16 +167,10 @@
     };
 
     # Language-Specific Configuration Agent
-    devenv-language-specialist = {
+    agents.devenv-language-specialist = {
       description = "Specialist in configuring specific programming languages within devenv";
       proactive = false;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "Grep"
-        "Bash"
-      ];
+      tools = [ "Read" "Write" "Edit" "Grep" "Bash" ];
       prompt = ''
         You specialize in configuring programming languages within devenv environments. Your focus areas:
 
@@ -244,16 +219,11 @@
       '';
     };
 
-    # Service & Infrastructure Agent
-    devenv-service-configurator = {
+    # Service & Infrastructure Agent  
+    agents.devenv-service-configurator = {
       description = "Expert in configuring databases, message queues, and infrastructure services";
       proactive = false;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "Bash"
-      ];
+      tools = [ "Read" "Write" "Edit" "Bash" ];
       prompt = ''
         You specialize in configuring infrastructure services within devenv. Your expertise covers:
 
@@ -299,15 +269,10 @@
     };
 
     # Process & Task Orchestration Agent
-    devenv-process-orchestrator = {
+    agents.devenv-process-orchestrator = {
       description = "Specialist in configuring processes, tasks, and development workflows";
       proactive = false;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "Bash"
-      ];
+      tools = [ "Read" "Write" "Edit" "Bash" ];
       prompt = ''
         You specialize in orchestrating development processes and tasks within devenv. Your focus:
 
@@ -410,7 +375,7 @@
         process.implementation = "process-compose"; # default
         # process.implementation = "overmind";
         # process.implementation = "hivemind";
-
+        
         # Custom process-compose configuration
         process.process-compose = {
           port = 8080; # TUI port
@@ -433,11 +398,11 @@
 
         # Custom scripts
         scripts.deploy = {
-          exec = '''
+          exec = ''
             echo "Deploying application..."
             cargo build --release
             docker build -t myapp .
-          ''';
+          '';
           description = "Build and deploy the application";
         };
         ```
@@ -447,15 +412,10 @@
     };
 
     # Container & Deployment Agent
-    devenv-deployment-specialist = {
+    agents.devenv-deployment-specialist = {
       description = "Expert in container generation, CI/CD integration, and deployment configurations";
       proactive = false;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "Bash"
-      ];
+      tools = [ "Read" "Write" "Edit" "Bash" ];
       prompt = ''
         You specialize in deployment and containerization aspects of devenv. Your expertise:
 
@@ -509,15 +469,10 @@
     };
 
     # Configuration Troubleshooting Agent
-    devenv-troubleshooter = {
+    agents.devenv-troubleshooter = {
       description = "Specialist in debugging devenv configuration issues and performance problems";
       proactive = true;
-      tools = [
-        "Read"
-        "Grep"
-        "Bash"
-        "TodoWrite"
-      ];
+      tools = [ "Read" "Grep" "Bash" "TodoWrite" ];
       prompt = ''
         You specialize in troubleshooting devenv configuration issues. Your diagnostic expertise:
 
@@ -575,15 +530,10 @@
     };
 
     # Git Hooks & Pre-commit Agent
-    devenv-git-hooks-specialist = {
+    agents.devenv-git-hooks-specialist = {
       description = "Expert in configuring git hooks, pre-commit checks, and code quality tools";
       proactive = false;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "Bash"
-      ];
+      tools = [ "Read" "Write" "Edit" "Bash" ];
       prompt = ''
         You specialize in configuring git hooks and code quality tools within devenv. Your focus:
 
@@ -647,17 +597,10 @@
     };
 
     # Comprehensive Language Support Agent
-    devenv-language-guru = {
+    agents.devenv-language-guru = {
       description = "Comprehensive expert in all 50+ programming languages supported by devenv";
       proactive = false;
-      tools = [
-        "Read"
-        "Write"
-        "Edit"
-        "MultiEdit"
-        "Grep"
-        "Bash"
-      ];
+      tools = [ "Read" "Write" "Edit" "MultiEdit" "Grep" "Bash" ];
       prompt = ''
         You are a comprehensive language expert for all programming languages supported by devenv. Your expertise covers:
 
@@ -1171,6 +1114,110 @@
       '';
     };
 
-  };
+    # Commands for common devenv tasks
+    commands = {
+      init-project = ''
+        Initialize a new devenv project with best practices
 
+        ```bash
+        devenv init
+        echo ".devenv" >> .gitignore
+        ```
+      '';
+
+      test-config = ''
+        Test the current devenv configuration
+
+        ```bash
+        devenv test
+        ```
+      '';
+
+      build-container = ''
+        Build a container from the current devenv
+
+        ```bash
+        devenv container build shell
+        ```
+      '';
+
+      update-inputs = ''
+        Update all inputs in devenv.yaml
+
+        ```bash
+        devenv update
+        ```
+      '';
+
+      clean-cache = ''
+        Clean the devenv evaluation cache
+
+        ```bash
+        devenv shell --refresh-eval-cache
+        ```
+      '';
+
+      debug-build = ''
+        Debug build issues with verbose output
+
+        ```bash
+        devenv --verbose shell
+        ```
+      '';
+    };
+
+    # Hooks for automatic devenv workflow
+    hooks = {
+      format-nix = {
+        enable = true;
+        name = "Format Nix files";
+        hookType = "PostToolUse";
+        matcher = "^(Edit|MultiEdit|Write)$";
+        command = ''
+          json=$(cat)
+          file_path=$(echo "$json" | jq -r '.file_path // empty')
+          
+          if [[ "$file_path" =~ \.(nix)$ ]]; then
+            if command -v nixpkgs-fmt >/dev/null 2>&1; then
+              nixpkgs-fmt "$file_path"
+              echo "Formatted Nix file: $file_path"
+            fi
+          fi
+        '';
+      };
+
+      validate-devenv = {
+        enable = true;
+        name = "Validate devenv configuration";
+        hookType = "PostToolUse";
+        matcher = "^(Edit|MultiEdit|Write)$";
+        command = ''
+          json=$(cat)
+          file_path=$(echo "$json" | jq -r '.file_path // empty')
+          
+          if [[ "$file_path" == "devenv.nix" || "$file_path" == "devenv.yaml" ]]; then
+            echo "Validating devenv configuration..."
+            if ! devenv shell --command "echo 'Configuration valid'"; then
+              echo "⚠️  devenv configuration validation failed"
+              exit 1
+            fi
+            echo "✅ devenv configuration is valid"
+          fi
+        '';
+      };
+
+      suggest-improvements = {
+        enable = true;
+        name = "Suggest devenv improvements";
+        hookType = "Stop";
+        command = ''
+          if [[ -f "devenv.nix" ]]; then
+            echo "💡 Consider running 'devenv test' to validate your configuration"
+            echo "💡 Use 'devenv update' to keep inputs current"
+            echo "💡 Check 'devenv info' for environment details"
+          fi
+        '';
+      };
+    };
+  };
 }
