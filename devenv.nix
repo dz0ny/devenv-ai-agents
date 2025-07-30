@@ -398,11 +398,11 @@
 
         # Custom scripts
         scripts.deploy = {
-          exec = ''
+          exec = '''
             echo "Deploying application..."
             cargo build --release
             docker build -t myapp .
-          '';
+          ''';
           description = "Build and deploy the application";
         };
         ```
